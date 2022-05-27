@@ -21,7 +21,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
     date_birth = models.DateField()
     first_name = models.CharField(max_length=255)
-    seconds_name = models.CharField(max_length=255)
+    second_name = models.CharField(max_length=255)
     created = models.DateTimeField(editable=False)
 
     objects = UserProfileManager()
@@ -40,6 +40,7 @@ class Profile(models.Model):
     user = models.OneToOneField(
         User,
         on_delete=models.CASCADE,
+        related_name='user'
     )
     slug = models.SlugField(unique=True)
 
