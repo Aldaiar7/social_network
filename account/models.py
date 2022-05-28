@@ -22,18 +22,14 @@ class User(AbstractBaseUser, PermissionsMixin):
     date_birth = models.DateField()
     first_name = models.CharField(max_length=255)
     second_name = models.CharField(max_length=255)
-    created = models.DateTimeField(editable=False)
+    created = models.DateTimeField(auto_now_add=True)
 
     objects = UserProfileManager()
 
     USERNAME_FIELD = 'username'
-    REQUIRED_FIELDS = ['phone']
-
-    def save(self, *args, **kwargs):
-        ''' On save, update timestamps '''
-        if not self.id:
-            self.created = timezone.now()
-        return super(User, self).save(*args, **kwargs)
+    REQUIRED_FIELDS = ['phone', 'email', 'date_birth', 'first_name', 'second_name']
+    
+    
 
 
 class Profile(models.Model):
@@ -45,77 +41,53 @@ class Profile(models.Model):
     slug = models.SlugField(unique=True)
 
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.user__username)
+        user = User.objects.get(pk=self.user_id)
+        self.slug = slugify(user.username)
         super(Profile, self).save(*args, **kwargs)
 
+    
 
 class Status(models.Model):
     status = models.TextField()
-    created = models.DateTimeField(editable=False)
+    created = models.DateTimeField(auto_now_add=True)
     profile = models.OneToOneField(
         Profile,
         on_delete=models.CASCADE,
     )
 
-    def save(self, *args, **kwargs):
-        if not self.id:
-            self.created = timezone.now()
-        return super(User, self).save(*args, **kwargs)
 
 
 class Subsctiption(models.Model):
     follower = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='sub_follower')
     following = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='sub_following')
-    created = models.DateTimeField(editable=False)
+    created = models.DateTimeField(auto_now_add=True)
 
-    def save(self, *args, **kwargs):
-        if not self.id:
-            self.created = timezone.now()
-        return super(User, self).save(*args, **kwargs)
+  
 
 
 class Message(models.Model):
     sender = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='message_sender')
     receiver = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='message_receiver')
-    created = models.DateTimeField(editable=False)
+    created = models.DateTimeField(auto_now_add=True)
     message = models.TextField()
 
-    def save(self, *args, **kwargs):
-        if not self.id:
-            self.created = timezone.now()
-        return super(User, self).save(*args, **kwargs)
+    
 
 
 class Post(models.Model):
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
     image = models.ImageField()
-    created = models.DateTimeField(editable=False)
+    created = models.DateTimeField(auto_now_add=True)
+    description = models.TextField(null=True, blank=True)
 
-    def save(self, *args, **kwargs):
-        if not self.id:
-            self.created = timezone.now()
-        return super(User, self).save(*args, **kwargs)
-
-
-class Description(models.Model):
-    description = models.TextField()
-    created = models.DateTimeField(editable=False)
-    post = models.OneToOneField(Post, on_delete=models.CASCADE)
-
-    def save(self, *args, **kwargs):
-        if not self.id:
-            self.created = timezone.now()
-        return super(User, self).save(*args, **kwargs)
+   
 
 
 class Reccomendation(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
-    created = models.DateTimeField(editable=False)
+    created = models.DateTimeField(auto_now_add=True)
 
-    def save(self, *args, **kwargs):
-        if not self.id:
-            self.created = timezone.now()
-        return super(User, self).save(*args, **kwargs)
+    
 
 
 class ProfileReccomendation(models.Model):
@@ -135,18 +107,15 @@ class ProfileMark(models.Model):
 class Like(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    created = models.DateTimeField(editable=False)
+    created = models.DateTimeField(auto_now_add=True)
 
-    def save(self, *args, **kwargs):
-        if not self.id:
-            self.created = timezone.now()
-        return super(User, self).save(*args, **kwargs)
+   
 
 
 class Comment(MPTTModel):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    created = models.DateTimeField(editable=False)
+    created = models.DateTimeField(auto_now_add=True)
     comment = models.TextField()
     parent = TreeForeignKey(
         'self',
@@ -168,13 +137,10 @@ class Comment(MPTTModel):
             return False
         return True
     
-    def save(self, *args, **kwargs):
-        if not self.id:
-            self.created = timezone.now()
-        return super(User, self).save(*args, **kwargs)
+ 
 
 
 class Repost(models.Model):
-    created = models.DateTimeField(editable=False)
+    created = models.DateTimeField(auto_now_add=True)
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)

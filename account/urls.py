@@ -11,6 +11,6 @@ from . import views
 urlpatterns = [
     path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('user/', views.UserAPIView.as_view(), name='user'),
-    path('user/register/', views.UserRegisterAPIView.as_view(), name='register'),
+    path('register/', views.UserRegisterAPIView.as_view(), name='register'),
+    path('upload/', views.PostCreateUpdateDestroyAPIView.as_view(), name='upload_post'),
 ]

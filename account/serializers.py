@@ -2,15 +2,15 @@ from rest_framework import serializers, exceptions
 
 from django.contrib.auth import get_user_model
 from django.contrib.auth.hashers import make_password
+from django.db.models import Q
 
-from .models import User
+from . import models
 
 
-class UserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = get_user_model()
-        fields = ('id', 'username')
-
+class PostSerializer(serializers.ModelSerializer):
+   class Meta:
+        model = models.Post
+        fields = '__all__'
 
 class RegisterSerializer(serializers.ModelSerializer):
     email = serializers.EmailField()
@@ -26,5 +26,5 @@ class RegisterSerializer(serializers.ModelSerializer):
         return attrs
 
     class Meta:
-        model = User
+        model = models.User
         fields = ['email', 'username', 'phone', 'date_birth', 'first_name', 'second_name', 'password']
