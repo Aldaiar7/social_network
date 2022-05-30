@@ -25,7 +25,14 @@ class RegisterSerializer(serializers.ModelSerializer):
         fields = ['email', 'username', 'phone', 'date_birth', 'first_name', 'second_name', 'password']
 
 
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.User
+        fields = ['id', 'email', 'username']
+
+
 class ProfileSerializer(serializers.ModelSerializer):
+    user = UserSerializer()
     class Meta:
         model = models.Profile
-        fields = '__all__'
+        fields = ['id', 'slug', 'user']

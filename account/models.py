@@ -38,7 +38,7 @@ class Profile(models.Model):
         on_delete=models.CASCADE,
         related_name='user'
     )
-    slug = models.SlugField(unique=True)
+    slug = models.SlugField(unique=True, editable=False)
 
     def save(self, *args, **kwargs):
         user = User.objects.get(pk=self.user_id)
