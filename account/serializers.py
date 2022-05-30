@@ -7,11 +7,6 @@ from django.db.models import Q
 from . import models
 
 
-class PostSerializer(serializers.ModelSerializer):
-   class Meta:
-        model = models.Post
-        fields = '__all__'
-
 class RegisterSerializer(serializers.ModelSerializer):
     email = serializers.EmailField()
     password = serializers.CharField()

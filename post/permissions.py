@@ -1,7 +1,7 @@
 from email import message
 from requests import request
 from rest_framework import permissions
-from .models import Profile
+from account.models import Profile
 
 class PostPermission(permissions.BasePermission):
     
