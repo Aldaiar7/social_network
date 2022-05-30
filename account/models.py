@@ -57,7 +57,7 @@ class Status(models.Model):
 
 
 
-class Subsctiption(models.Model):
+class Subscription(models.Model):
     follower = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='sub_follower')
     following = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='sub_following')
     created = models.DateTimeField(auto_now_add=True)

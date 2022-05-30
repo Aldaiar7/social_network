@@ -13,4 +13,5 @@ urlpatterns = [
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('register/', views.UserRegisterAPIView.as_view(), name='register'),
     path('upload/', views.PostCreateUpdateDestroyAPIView.as_view(), name='upload_post'),
+    path('profiles/', views.ProfileListAPIView.as_view(), name='profiles')
 ]

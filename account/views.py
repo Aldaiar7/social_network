@@ -19,3 +19,9 @@ class PostCreateUpdateDestroyAPIView(generics.CreateAPIView,
     serializer_class = serializers.PostSerializer
     queryset = models.Post.objects.all()
     permission_classes = [PostPermission]
+
+
+class ProfileListAPIView(generics.ListAPIView):
+    serializer_class = serializers.ProfileSerializer
+    queryset = models.Profile.objects.all()
+
