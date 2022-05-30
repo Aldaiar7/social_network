@@ -3,7 +3,7 @@ from rest_framework import serializers
 
 from account.models import Subscription, Profile
 
-class SubscriptionSerializer(serializers.ModelSerializer):
+class SubscriptionCreateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Subscription
@@ -25,6 +25,9 @@ class SubscriptionSerializer(serializers.ModelSerializer):
 
 
 
-        
+class SubscriptionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Subscription
+        fields = '__all__'
 
 
