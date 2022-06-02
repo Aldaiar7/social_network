@@ -27,4 +27,9 @@ urlpatterns = [
         views.StatusListAPIView.as_view(),
         name="status_list",
     ),
+    path(
+        "profiles/<slug:slug>/",
+        views.ProfileRetrieveAPIView.as_view(),
+        name="get_profile",
+    ),
 ]

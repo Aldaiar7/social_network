@@ -26,18 +26,12 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     objects = UserProfileManager()
 
-    USERNAME_FIELD = 'username'
-    REQUIRED_FIELDS = ['phone', 'email', 'date_birth', 'first_name', 'second_name']
-    
-    
+    USERNAME_FIELD = "username"
+    REQUIRED_FIELDS = ["phone", "email", "date_birth", "first_name", "second_name"]
 
 
 class Profile(models.Model):
-    user = models.OneToOneField(
-        User,
-        on_delete=models.CASCADE,
-        related_name='user'
-    )
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="user")
     slug = models.SlugField(unique=True, editable=False)
 
     def save(self, *args, **kwargs):
@@ -45,7 +39,6 @@ class Profile(models.Model):
         self.slug = slugify(user.username)
         super(Profile, self).save(*args, **kwargs)
 
-    
 
 class Status(models.Model):
     status = models.TextField()
@@ -53,25 +46,29 @@ class Status(models.Model):
     profile = models.OneToOneField(
         Profile,
         on_delete=models.CASCADE,
+        related_name='status'
     )
 
 
-
 class Subscription(models.Model):
-    follower = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='sub_follower')
-    following = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='sub_following')
+    follower = models.ForeignKey(
+        Profile, on_delete=models.CASCADE, related_name="follower"
+    )
+    following = models.ForeignKey(
+        Profile, on_delete=models.CASCADE, related_name="following"
+    )
     created = models.DateTimeField(auto_now_add=True)
-
-  
 
 
 class Message(models.Model):
-    sender = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='message_sender')
-    receiver = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='message_receiver')
+    sender = models.ForeignKey(
+        Profile, on_delete=models.CASCADE, related_name="message_sender"
+    )
+    receiver = models.ForeignKey(
+        Profile, on_delete=models.CASCADE, related_name="message_receiver"
+    )
     created = models.DateTimeField(auto_now_add=True)
     message = models.TextField()
-
-    
 
 
 class Post(models.Model):
@@ -80,14 +77,10 @@ class Post(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     description = models.TextField(null=True, blank=True)
 
-   
-
 
 class Reccomendation(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)
-
-    
 
 
 class ProfileReccomendation(models.Model):
@@ -109,8 +102,6 @@ class Like(models.Model):
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)
 
-   
-
 
 class Comment(MPTTModel):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
@@ -118,26 +109,20 @@ class Comment(MPTTModel):
     created = models.DateTimeField(auto_now_add=True)
     comment = models.TextField()
     parent = TreeForeignKey(
-        'self',
-        on_delete=models.CASCADE,
-        null=True,
-        blank=True,
-        related_name='children'
+        "self", on_delete=models.CASCADE, null=True, blank=True, related_name="children"
     )
-    
+
     class MPTTMeta:
-        order_insertion_by = ['-created']
-    
+        order_insertion_by = ["-created"]
+
     def children(self):
         return Comment.objects.filter(parent=self)
-    
+
     @property
     def is_parent(self):
         if self.parent is not None:
             return False
         return True
-    
- 
 
 
 class Repost(models.Model):

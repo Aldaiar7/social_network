@@ -1,8 +1,7 @@
 from rest_framework import serializers, exceptions
 
-from django.contrib.auth import get_user_model
 from django.contrib.auth.hashers import make_password
-from django.db.models import Q
+from django.forms import model_to_dict
 
 from . import models
 
@@ -36,7 +35,8 @@ class RegisterSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.User
-        fields = ["id", "email", "username"]
+        fields = ["username"]
+
 
 
 class ProfileSerializer(serializers.ModelSerializer):
@@ -45,6 +45,17 @@ class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Profile
         fields = ["id", "slug", "user"]
+
+
+class ProfileRetrieveSerializer(serializers.ModelSerializer):
+    username = serializers.CharField(source='user.username')
+
+    class Meta:
+        model = models.Profile
+        fields = ['id', 'username']
+        lookup_field = 'slug'
+
+    
 
 
 class StatusSerializer(serializers.ModelSerializer):

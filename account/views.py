@@ -2,6 +2,8 @@ from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework import status
 
+from django.shortcuts import get_object_or_404
+
 from . import serializers
 from . import models
 from . import permissions
@@ -15,6 +17,31 @@ class UserRegisterAPIView(generics.CreateAPIView):
 class ProfileListAPIView(generics.ListAPIView):
     serializer_class = serializers.ProfileSerializer
     queryset = models.Profile.objects.all()
+
+
+class ProfileRetrieveAPIView(generics.RetrieveAPIView):
+    serializer_class = serializers.ProfileRetrieveSerializer
+    queryset = models.Profile.objects.all()
+    lookup_field = "slug"
+
+    def retrieve(self, request, slug=None, *args, **kwargs):
+        queryset = models.Profile.objects.all()
+        profile = get_object_or_404(queryset, slug=slug)
+        serializer = serializers.ProfileRetrieveSerializer(profile)
+        context = serializer.data
+        followed = 0
+        followers = 0
+        profile_status = None
+        try:
+            followed = profile.follower.all().count()
+            followers = profile.following.all().count()
+            profile_status = profile.status.status()
+        except:
+            pass
+        context['followed'] = followed
+        context['followers'] = followers
+        context['status'] = profile_status
+        return Response(data=context, status=status.HTTP_200_OK)
 
 
 class StatusCreateAPIView(generics.CreateAPIView):
@@ -37,4 +64,3 @@ class StatusDestroyAPIView(generics.DestroyAPIView):
 class StatusListAPIView(generics.ListAPIView):
     serializer_class = serializers.StatusSerializer
     queryset = models.Status.objects.all()
-    
