@@ -12,27 +12,42 @@ class RegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField()
 
     def validate(self, attrs):
-        if self.Meta.model.objects.filter(email=attrs.get('email')).exists():
+        if self.Meta.model.objects.filter(email=attrs.get("email")).exists():
             raise exceptions.ValidationError(
                 detail="User with this email already exists"
             )
-        password = attrs.pop('password')
-        attrs['password'] = make_password(password)
+        password = attrs.pop("password")
+        attrs["password"] = make_password(password)
         return attrs
 
     class Meta:
         model = models.User
-        fields = ['email', 'username', 'phone', 'date_birth', 'first_name', 'second_name', 'password']
+        fields = [
+            "email",
+            "username",
+            "phone",
+            "date_birth",
+            "first_name",
+            "second_name",
+            "password",
+        ]
 
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.User
-        fields = ['id', 'email', 'username']
+        fields = ["id", "email", "username"]
 
 
 class ProfileSerializer(serializers.ModelSerializer):
     user = UserSerializer()
+
     class Meta:
         model = models.Profile
-        fields = ['id', 'slug', 'user']
+        fields = ["id", "slug", "user"]
+
+
+class StatusSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Status
+        fields = "__all__"

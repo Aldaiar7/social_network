@@ -22,23 +22,22 @@ class PostDestroyAPIView(generics.DestroyAPIView):
     permission_classes = [PostDestroyUpdatePermission]
 
     def get_queryset(self):
-        return Post.objects.filter(pk=self.kwargs['pk'])
-   
+        return Post.objects.filter(pk=self.kwargs["pk"])
+
     def destroy(self, request, *args, **kwargs):
         serializer = self.get_serializer(self.get_object())
         super().destroy(args, kwargs)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-
 class PostUpdateAPIView(generics.UpdateAPIView):
     serializer_class = PostSerializer
     permission_classes = [PostDestroyUpdatePermission]
-    
+
     def get_queryset(self):
-        return Post.objects.filter(pk=self.kwargs['pk'])
-    
-        
+        return Post.objects.filter(pk=self.kwargs["pk"])
+
+
 class PostListAPIView(generics.ListAPIView):
     serializer_class = PostSerializer
     queryset = Post.objects.all()
