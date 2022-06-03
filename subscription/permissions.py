@@ -9,16 +9,27 @@ class SubscriptionPermission(permissions.BasePermission):
 
     def has_permission(self, request, view):
         profile_id = request.data.get('follower')
-        user_id = Profile.objects.get(pk=profile_id).user.id
-        
-        return user_id == request.user.id
+        return profile_id == request.user.id
         
     def has_object_permission(self, request, view, obj):
         profile_id = request.data.get('follower')
-        user_id = Profile.objects.get(pk=profile_id).user.id
-        
-        return user_id == request.user.id
+        return profile_id == request.user.id
 
+
+class SubscriptionSelfPermission(permissions.BasePermission):
+    message = "Profile can't follow himself"
+
+    def has_permission(self, request, view):
+        follower_id = request.data.get('follower')
+        following_id = request.data.get('following')
+        
+        return follower_id != following_id
+    
+    def has_object_permission(self, request, view, obj):
+        follower_id = request.data.get('follower')
+        following_id = request.data.get('following')
+        
+        return follower_id != following_id
 
 class SubscriptionDestroyPermission(permissions.BasePermission):
     message = "Profile can delete only his follows"
