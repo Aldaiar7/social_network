@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'mptt',
     'account',
     'subscription',
+    'channels',
 
     
 ]
@@ -82,8 +83,8 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'social_newtwork.wsgi.application'
 
+ASGI_APPLICATION = "social_newtwork.asgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
