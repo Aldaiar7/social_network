@@ -24,25 +24,6 @@ class ProfileRetrieveAPIView(generics.RetrieveAPIView):
     queryset = models.Profile.objects.all()
     lookup_field = "slug"
 
-    def retrieve(self, request, slug=None, *args, **kwargs):
-        queryset = models.Profile.objects.all()
-        profile = get_object_or_404(queryset, slug=slug)
-        serializer = serializers.ProfileRetrieveSerializer(profile)
-        context = serializer.data
-        followed = 0
-        followers = 0
-        profile_status = None
-        try:
-            followed = profile.follower.all().count()
-            followers = profile.following.all().count()
-            profile_status = profile.status.status()
-        except:
-            pass
-        context['followed'] = followed
-        context['followers'] = followers
-        context['status'] = profile_status
-        return Response(data=context, status=status.HTTP_200_OK)
-
 
 class StatusCreateAPIView(generics.CreateAPIView):
     serializer_class = serializers.StatusSerializer

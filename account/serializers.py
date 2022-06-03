@@ -38,21 +38,35 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ["username"]
 
 
-
 class ProfileSerializer(serializers.ModelSerializer):
     user = UserSerializer()
-
     class Meta:
         model = models.Profile
         fields = ["id", "slug", "user"]
 
 
+class StatusSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Status
+        fields = ['status']
+
+
+class PostSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Post
+        fields = ['image', 'description', 'created']
+
+
 class ProfileRetrieveSerializer(serializers.ModelSerializer):
     username = serializers.CharField(source='user.username')
+    posts = PostSerializer(many=True)
+    status = serializers.CharField(source='status.status')
+    followers = serializers.IntegerField(source='following.all.count')
+    followed = serializers.IntegerField(source='follower.all.count')
 
     class Meta:
         model = models.Profile
-        fields = ['id', 'username']
+        fields = ['id', 'username', 'posts', 'status', 'followers', 'followed']
         lookup_field = 'slug'
 
     

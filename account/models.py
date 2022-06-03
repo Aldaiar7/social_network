@@ -44,9 +44,7 @@ class Status(models.Model):
     status = models.TextField()
     created = models.DateTimeField(auto_now_add=True)
     profile = models.OneToOneField(
-        Profile,
-        on_delete=models.CASCADE,
-        related_name='status'
+        Profile, on_delete=models.CASCADE, related_name="status"
     )
 
 
@@ -72,10 +70,13 @@ class Message(models.Model):
 
 
 class Post(models.Model):
-    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="posts")
     image = models.ImageField()
     created = models.DateTimeField(auto_now_add=True)
     description = models.TextField(null=True, blank=True)
+
+    class Meta:
+        ordering = ['-created']
 
 
 class Reccomendation(models.Model):

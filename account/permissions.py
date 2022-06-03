@@ -10,6 +10,7 @@ class StatusPermission(BasePermission):
 
     def has_permission(self, request, view):
         profile = Profile.objects.get(pk=request.data.get("profile"))
+        print(profile.id, request.user.id, profile.slug)
         return profile.id == request.user.id and (
             profile.slug == view.kwargs.get("slug")
         )
