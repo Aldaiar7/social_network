@@ -5,7 +5,6 @@ from account.models import Profile, Post
 
 class PostPermission(permissions.BasePermission):
     
-
     def has_permission(self, request, view):
         profile_id = int(request.data.get('profile'))
         profile_user__id = Profile.objects.get(pk=profile_id).user.id

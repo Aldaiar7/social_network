@@ -74,6 +74,8 @@ class Post(models.Model):
     image = models.ImageField()
     created = models.DateTimeField(auto_now_add=True)
     description = models.TextField(null=True, blank=True)
+    liked_by = models.ManyToManyField('Profile', through='Like', related_name='liked')
+    amount_likes = models.PositiveIntegerField(default=0)
 
     class Meta:
         ordering = ['-created']
