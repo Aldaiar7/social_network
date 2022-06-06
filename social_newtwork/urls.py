@@ -22,5 +22,6 @@ urlpatterns = [
     path('api/v0/', include('account.urls')),
     path('api/v0/', include('subscription.urls')),
     path('api/v0/', include('post.urls')),
-
+    path('api/v0/', include('message.urls')),
+    
 ]
