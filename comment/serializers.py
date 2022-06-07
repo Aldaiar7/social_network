@@ -4,6 +4,7 @@ from account.models import Comment
 
 
 class CommentSerializer(serializers.ModelSerializer):
+    
     class Meta:
         model = Comment
-        fields = ['id', 'created', 'comment', 'post', 'profile', 'parent']
+        fields = "__all__"

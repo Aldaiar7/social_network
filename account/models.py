@@ -2,7 +2,7 @@ from enum import unique
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
-from django.forms import CharField
+from django.forms import CharField, ValidationError
 from django.utils import timezone
 from django.utils.text import slugify
 
@@ -117,7 +117,7 @@ class Comment(MPTTModel):
 
     class MPTTMeta:
         order_insertion_by = ["-created"]
-
+    
     def children(self):
         return Comment.objects.filter(parent=self)
 
@@ -126,8 +126,8 @@ class Comment(MPTTModel):
         if self.parent is not None:
             return False
         return True
-
-
+    
+  
 class Repost(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)

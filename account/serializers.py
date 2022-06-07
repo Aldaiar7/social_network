@@ -51,7 +51,7 @@ class StatusSerializer(serializers.ModelSerializer):
         fields = ['status']
 
 
-class PostSerializer(serializers.ModelSerializer):
+class PostProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Post
         fields = ['image', 'description', 'created']
@@ -59,7 +59,7 @@ class PostSerializer(serializers.ModelSerializer):
 
 class ProfileRetrieveSerializer(serializers.ModelSerializer):
     username = serializers.CharField(source='user.username')
-    posts = PostSerializer(many=True)
+    posts = PostProfileSerializer(many=True)
     status = serializers.CharField(source='status.status')
     followers = serializers.IntegerField(source='following.all.count')
     followed = serializers.IntegerField(source='follower.all.count')

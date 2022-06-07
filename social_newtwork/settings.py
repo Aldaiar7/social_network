@@ -44,6 +44,8 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "channels",
     "rest_framework",
+    "rest_framework_swagger",
+    "drf_yasg",
     "phonenumber_field",
     "mptt",
     "account",
@@ -148,7 +150,8 @@ AUTH_USER_MODEL = "account.User"
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework_simplejwt.authentication.JWTAuthentication",
-    )
+    ),
+    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema'
 }
 
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
