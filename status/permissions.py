@@ -8,14 +8,13 @@ class StatusPermission(BasePermission):
 
     def has_permission(self, request, view):
         profile = Profile.objects.get(pk=request.data.get("profile"))
-        print(profile.id, request.user.id, profile.slug)
-        return profile.id == request.user.id and (
+        return profile.user.id == request.user.id and (
             profile.slug == view.kwargs.get("slug")
         )
 
     def has_object_permission(self, request, view, obj):
         profile = Profile.objects.get(pk=request.data.get("profile"))
-        return profile.id == request.user.id and (
+        return profile.user.id == request.user.id and (
             profile.slug == view.kwargs.get("slug")
         )
 
@@ -26,13 +25,13 @@ class StatusObjectPermission(BasePermission):
     def has_permission(self, request, view):
         status = Status.objects.get(pk=view.kwargs.get("pk"))
         profile = Profile.objects.get(pk=status.profile.id)
-        return profile.id == request.user.id and (
+        return profile.user.id == request.user.id and (
             profile.slug == view.kwargs.get("slug")
         )
 
     def has_object_permission(self, request, view, obj):
         status = Status.objects.get(pk=view.kwargs.get("pk"))
         profile = Profile.objects.get(pk=status.profile.id)
-        return profile.id == request.user.id and (
+        return profile.user.id == request.user.id and (
             profile.slug == view.kwargs.get("slug")
         )

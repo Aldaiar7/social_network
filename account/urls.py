@@ -17,4 +17,5 @@ urlpatterns = [
         views.ProfileRetrieveAPIView.as_view(),
         name="get_profile",
     ),
+    path("profiles/<slug:slug>/edit/<int:pk>/", views.ProfileUpdateAPIView.as_view(), name='profile_edit'),
 ]

@@ -30,34 +30,42 @@ class RegisterSerializer(serializers.ModelSerializer):
         ]
 
 
-class UserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.User
-        fields = ["username"]
-
-
 class ProfileSerializer(serializers.ModelSerializer):
-    user = UserSerializer()
+    username = serializers.CharField(source='user.username')
+
     class Meta:
         model = models.Profile
-        fields = ["id", "slug", "user"]
-
+        fields = ["id", "slug", "username"]
 
 
 class PostProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Post
-        fields = ['image', 'description', 'created']
+        fields = ["image", "description", "created"]
 
 
 class ProfileRetrieveSerializer(serializers.ModelSerializer):
-    username = serializers.CharField(source='user.username')
+    username = serializers.CharField(source="user.username")
     posts = PostProfileSerializer(many=True)
-    status = serializers.CharField(source='status.status')
-    followers = serializers.IntegerField(source='following.all.count')
-    followed = serializers.IntegerField(source='follower.all.count')
+    status = serializers.CharField(source="status.status")
+    followers = serializers.IntegerField(source="following.all.count")
+    followed = serializers.IntegerField(source="follower.all.count")
 
     class Meta:
         model = models.Profile
-        fields = ['id', 'username', 'posts', 'status', 'followers', 'followed']
-        lookup_field = 'slug'
+        fields = ["id", "username", "posts", "status", "followers", "followed"]
+        lookup_field = "slug"
+
+
+class ProfileUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.User
+        fields = [
+            "username",
+            "email",
+            "password",
+            "phone",
+            "date_birth",
+            "first_name",
+            "second_name",
+        ]

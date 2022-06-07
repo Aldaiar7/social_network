@@ -10,12 +10,12 @@ class SubscriptionPermission(permissions.BasePermission):
     )
 
     def has_permission(self, request, view):
-        profile_id = request.data.get("follower")
-        return profile_id == request.user.id
+        profile = Profile.object.get(pk=request.data.get("follower"))
+        return profile.user.id == request.user.id
 
     def has_object_permission(self, request, view, obj):
-        profile_id = request.data.get("follower")
-        return profile_id == request.user.id
+        profile = Profile.object.get(pk=request.data.get("follower"))
+        return profile.user.id == request.user.id
 
 
 class SubscriptionSelfPermission(permissions.BasePermission):
