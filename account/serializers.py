@@ -1,8 +1,6 @@
 from rest_framework import serializers, exceptions
 
 from django.contrib.auth.hashers import make_password
-from django.forms import model_to_dict
-
 from . import models
 
 
@@ -45,11 +43,6 @@ class ProfileSerializer(serializers.ModelSerializer):
         fields = ["id", "slug", "user"]
 
 
-class StatusSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.Status
-        fields = ['status']
-
 
 class PostProfileSerializer(serializers.ModelSerializer):
     class Meta:
@@ -68,11 +61,3 @@ class ProfileRetrieveSerializer(serializers.ModelSerializer):
         model = models.Profile
         fields = ['id', 'username', 'posts', 'status', 'followers', 'followed']
         lookup_field = 'slug'
-
-    
-
-
-class StatusSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.Status
-        fields = "__all__"
