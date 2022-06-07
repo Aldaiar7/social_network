@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     "message",
     "post",
     "like",
+    "comment",
 ]
 
 MIDDLEWARE = [
