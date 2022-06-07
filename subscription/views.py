@@ -5,14 +5,23 @@ from rest_framework.response import Response
 from rest_framework import status
 
 from account.models import Subscription
-from .serializers import SubscriptionCreateSerializer, SubscriptionSerializer
-from .permissions import SubscriptionPermission, SubscriptionDestroyPermission, SubscriptionSelfPermission
+from .serializers import SubscriptionSerializer
+from .permissions import (
+    SubscriptionPermission,
+    SubscriptionDestroyPermission,
+    SubscriptionSelfPermission,
+    SubscriptionSinglePermission,
+)
 
 
 class SubscriptionCreateAPIView(generics.CreateAPIView):
-    serializer_class = SubscriptionCreateSerializer
+    serializer_class = SubscriptionSerializer
     queryset = Subscription.objects.all()
-    permission_classes = [SubscriptionPermission, SubscriptionSelfPermission]
+    permission_classes = [
+        SubscriptionPermission,
+        SubscriptionSelfPermission,
+        SubscriptionSinglePermission,
+    ]
 
 
 class SubscriptionDestroyAPIView(generics.DestroyAPIView):
@@ -20,7 +29,7 @@ class SubscriptionDestroyAPIView(generics.DestroyAPIView):
     permission_classes = [SubscriptionDestroyPermission]
 
     def get_queryset(self):
-        return Subscription.objects.filter(pk=self.kwargs['pk'])
+        return Subscription.objects.filter(pk=self.kwargs["pk"])
 
     def destroy(self, request, *args, **kwargs):
         serializer = self.get_serializer(self.get_object())

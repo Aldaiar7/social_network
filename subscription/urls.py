@@ -12,5 +12,5 @@ urlpatterns = [
         views.SubscriptionDestroyAPIView.as_view(),
         name="unfollow",
     ),
-    path("subscriptions/", views.SubscriptionListAPIView.as_view(), name="sub_list"),
+    path("subscriptions/list/", views.SubscriptionListAPIView.as_view(), name="sub_list"),
 ]
