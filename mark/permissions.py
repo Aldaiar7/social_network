@@ -21,6 +21,8 @@ class MarkPermission(BasePermission):
 
 
 class MarkObjectPermission(BasePermission):
+    message = 'User can access only his marks'
+
     def has_permission(self, request, view):
         profile = Profile.objects.get(user=request.user.id)
         mark = Mark.objects.get(pk=view.kwargs.get("pk"))
