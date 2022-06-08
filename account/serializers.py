@@ -31,7 +31,7 @@ class RegisterSerializer(serializers.ModelSerializer):
 
 
 class ProfileSerializer(serializers.ModelSerializer):
-    username = serializers.CharField(source='user.username')
+    username = serializers.CharField(source="user.username")
 
     class Meta:
         model = models.Profile
@@ -39,17 +39,26 @@ class ProfileSerializer(serializers.ModelSerializer):
 
 
 class PostProfileSerializer(serializers.ModelSerializer):
+    comments = serializers.IntegerField(source="comments.count")
+
     class Meta:
         model = models.Post
-        fields = ["image", "description", "created"]
+        fields = [
+            "id",
+            "amount_likes",
+            "comments",
+            "image",
+            "description",
+            "created",
+        ]
 
 
 class ProfileRetrieveSerializer(serializers.ModelSerializer):
     username = serializers.CharField(source="user.username")
     posts = PostProfileSerializer(many=True)
     status = serializers.CharField(source="status.status")
-    followers = serializers.IntegerField(source="following.all.count")
-    followed = serializers.IntegerField(source="follower.all.count")
+    followers = serializers.IntegerField(source="following.count")
+    followed = serializers.IntegerField(source="follower.count")
 
     class Meta:
         model = models.Profile

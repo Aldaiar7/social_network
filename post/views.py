@@ -1,12 +1,8 @@
-from django.shortcuts import render
-
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework import status
 
-from account import serializers
-
-from .serializers import PostSerializer
+from .serializers import PostSerializer, PostListSerializer, PostUpdateSerializer
 from account.models import Post
 from .permissions import PostDestroyUpdatePermission, PostPermission
 
@@ -31,7 +27,7 @@ class PostDestroyAPIView(generics.DestroyAPIView):
 
 
 class PostUpdateAPIView(generics.UpdateAPIView):
-    serializer_class = PostSerializer
+    serializer_class = PostUpdateSerializer
     permission_classes = [PostDestroyUpdatePermission]
 
     def get_queryset(self):
@@ -39,5 +35,5 @@ class PostUpdateAPIView(generics.UpdateAPIView):
 
 
 class PostListAPIView(generics.ListAPIView):
-    serializer_class = PostSerializer
+    serializer_class = PostListSerializer
     queryset = Post.objects.all()
