@@ -42,12 +42,14 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+
     "channels",
     "rest_framework",
     "rest_framework_swagger",
     "drf_yasg",
     "phonenumber_field",
     "mptt",
+
     "account",
     "subscription",
     "message",
@@ -56,6 +58,7 @@ INSTALLED_APPS = [
     "comment",
     "status",
     "mark",
+    "repost",
 ]
 
 MIDDLEWARE = [
