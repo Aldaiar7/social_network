@@ -93,11 +93,7 @@ class ProfileReccomendation(models.Model):
 
 class Mark(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
-
-
-class ProfileMark(models.Model):
-    mark = models.ForeignKey(Mark, on_delete=models.CASCADE)
-    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    marked_profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='marked_profiles')
 
 
 class Like(models.Model):
