@@ -30,6 +30,7 @@ urlpatterns = [
     path('api/v0/', include('status.urls')),
     path('api/v0/', include('mark.urls')),
     path('api/v0/', include('repost.urls')),
+    path('api/v0/', include('feed.urls')),
     
     re_path(r'^doc(?P<format>\.json|\.yaml)$',
         schema_view.without_ui(cache_timeout=0), name='schema-json'),

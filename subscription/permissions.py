@@ -10,11 +10,11 @@ class SubscriptionPermission(permissions.BasePermission):
     )
 
     def has_permission(self, request, view):
-        profile = Profile.object.get(pk=request.data.get("follower"))
+        profile = Profile.objects.get(pk=request.data.get("follower"))
         return profile.user.id == request.user.id
 
     def has_object_permission(self, request, view, obj):
-        profile = Profile.object.get(pk=request.data.get("follower"))
+        profile = Profile.objects.get(pk=request.data.get("follower"))
         return profile.user.id == request.user.id
 
 
@@ -60,11 +60,12 @@ class SubscriptionSinglePermission(permissions.BasePermission):
             follower__id=request.data.get("follower")
         ).filter(following__id=request.data.get("following"))
 
-        return sub is None
+        print(not sub.exists())
+        return  not sub.exists()
 
     def has_object_permission(self, request, view, obj):
         sub = Subscription.objects.filter(
             follower__id=request.data.get("follower")
         ).filter(following__id=request.data.get("following"))
 
-        return sub is None
+        return not sub.exists()

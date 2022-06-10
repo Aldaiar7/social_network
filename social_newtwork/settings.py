@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     "status",
     "mark",
     "repost",
+    "feed",
 ]
 
 MIDDLEWARE = [
