@@ -36,3 +36,5 @@ class ProfileDestroyAPIView(generics.DestroyAPIView):
     serializer_class = ProfileUserSerializer
     queryset = Profile.objects.all()
     permission_classes = [ProfileObjectPermission]
+
+

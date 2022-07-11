@@ -24,7 +24,7 @@ urlpatterns = [
     path('api/v0/', include('account.urls')),
     path('api/v0/', include('subscription.urls')),
     path('api/v0/', include('post.urls')),
-    path('api/v0/', include('message.urls')),
+    path('', include('message.urls')),
     path('api/v0/', include('like.urls')),
     path('api/v0/', include('comment.urls')),
     path('api/v0/', include('status.urls')),

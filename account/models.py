@@ -62,11 +62,9 @@ class Message(models.Model):
     sender = models.ForeignKey(
         Profile, on_delete=models.CASCADE, related_name="message_sender"
     )
-    receiver = models.ForeignKey(
-        Profile, on_delete=models.CASCADE, related_name="message_receiver"
-    )
     created = models.DateTimeField(auto_now_add=True)
     message = models.TextField()
+    thread_name = models.CharField(null=True, blank=True, max_length=50)
 
 
 class Post(models.Model):
@@ -79,16 +77,6 @@ class Post(models.Model):
 
     class Meta:
         ordering = ['-created']
-
-
-class Reccomendation(models.Model):
-    post = models.ForeignKey(Post, on_delete=models.CASCADE)
-    created = models.DateTimeField(auto_now_add=True)
-
-
-class ProfileReccomendation(models.Model):
-    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    recommendation = models.ForeignKey(Reccomendation, on_delete=models.CASCADE)
 
 
 class Mark(models.Model):
