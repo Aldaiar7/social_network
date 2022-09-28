@@ -8,6 +8,9 @@ from .serializers import (
 )
 from .models import User, Profile
 from .permissions import ProfileObjectPermission
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
+from django.views.decorators.vary import vary_on_headers
 
 
 class UserRegisterAPIView(generics.CreateAPIView):
@@ -18,6 +21,10 @@ class UserRegisterAPIView(generics.CreateAPIView):
 class ProfileListAPIView(generics.ListAPIView):
     serializer_class = ProfileSerializer
     queryset = Profile.objects.all()
+    @method_decorator(cache_page(60 * 60 * 2, key_prefix='profile'))
+    @method_decorator(vary_on_headers('Authorization'))
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
 
 
 class ProfileRetrieveAPIView(generics.RetrieveAPIView):
